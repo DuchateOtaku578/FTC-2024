@@ -1,4 +1,4 @@
-package domain;
+package org.firstinspires.ftc.teamcode.RobotCenterStage2024.domain;
 
 import com.qualcomm.robotcore.hardware.DistanceSensor;
 

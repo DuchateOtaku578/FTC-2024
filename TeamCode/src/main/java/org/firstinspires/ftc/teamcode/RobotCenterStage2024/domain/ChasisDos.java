@@ -1,12 +1,11 @@
-package domain;
+package org.firstinspires.ftc.teamcode.RobotCenterStage2024.domain;
 
-import com.qualcomm.hardware.bosch.BNO055IMU;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.hardware.Gamepad;
 
-public class Chasis {
+public class ChasisDos {
 
     public DcMotor enfrenteDer;
     private DcMotor enfrenteIzq;
@@ -18,22 +17,9 @@ public class Chasis {
     public static final int cuadroX = 1200;
     public static final int cuadroG = 930;
 
-    private DcMotor motores[];
 
-    public Chasis(DcMotor enfrenteDer, DcMotor enfrenteIzq, DcMotor atrasDer, DcMotor atrasIzq){
-        this.enfrenteDer = enfrenteDer;
-        this.enfrenteIzq = enfrenteIzq;
-        this.atrasDer = atrasDer;
-        this.atrasIzq = atrasIzq;
-    }
 
-    public Chasis(DcMotor[] motores, LinearOpMode linearOpMode){
-        this.linearOpMode = linearOpMode;
-        this.motores = motores;
-        ;
-    }
-
-    public Chasis(DcMotor[] motores, BNO055IMU imu, LinearOpMode linearOpMode){
+    public ChasisDos(DcMotor enfrenteDer, DcMotor enfrenteIzq, DcMotor atrasDer, DcMotor atrasIzq){
         this.enfrenteDer = enfrenteDer;
         this.enfrenteIzq = enfrenteIzq;
         this.atrasDer = atrasDer;
@@ -43,10 +29,10 @@ public class Chasis {
 
 
     public void init(){
-        this.enfrenteDer = motores[0];
-        this.enfrenteIzq = motores[1];
-        this.atrasDer = motores[2];
-        this.atrasIzq = motores[3];
+        this.enfrenteDer = enfrenteDer;
+        this.enfrenteIzq = enfrenteIzq;
+        this.atrasDer = atrasDer;
+        this.atrasIzq = atrasIzq;
     }
 
     public void reversa(DcMotor[] motores) {
@@ -388,4 +374,5 @@ public class Chasis {
     }
 
 
-} 
+}
+

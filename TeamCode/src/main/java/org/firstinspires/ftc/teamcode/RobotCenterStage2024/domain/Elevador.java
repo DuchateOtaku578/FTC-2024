@@ -1,38 +1,39 @@
-package domain;
+package org.firstinspires.ftc.teamcode.RobotCenterStage2024.domain;
 
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.Servo;
 
-public class ElevadorAutonomo {
+public class Elevador {
     public DcMotor elevador;
     public DcMotor giroMotor;
 
     Servo servo;
+    Servo servo_2;
 
     private LinearOpMode linearOpMode;
 
     public int pulsosActual = 0;
 
-    private final int PULSOSALTO = 4300;
-    private final int PULSOSMEDIO = 3300;
-    private final int PULSOSBAJO = 2000;
+    private final int PULSOSALTO = 950;
+    private final int PULSOSMEDIO = 850;
+    private final int PULSOSBAJO = 550;
     private final int PULSOSMOVERSECONO = 700;
     private final int PULSOSMOVERSE = 400;
     private final int PULSOSPISO = 0;
 
-    private final int PULSOSCONO5 = 610;
-    private final int PULSOSCONO4 = 500;
+    private final int PULSOSCONO5 = 300;
+    private final int PULSOSCONO4 = 150;
 
-    private final int PULSOS90 = 490;
+    public final int PULSOS90 = 490;
 
- //Posicion de inicio (Puede cambiar)
+    //Posicion de inicio (Puede cambiar)
     public int pulsosGiroAct;
 
     private boolean garraCerrada = false;
 
 
-    public ElevadorAutonomo(DcMotor elevador , DcMotor giroMotor, Servo servo, LinearOpMode linearOpMode, int posGiroAct){
+    public Elevador(DcMotor elevador , DcMotor giroMotor, Servo servo, LinearOpMode linearOpMode, int posGiroAct){
         this.elevador = elevador;
         this.giroMotor = giroMotor;
         this.servo = servo;
@@ -40,39 +41,58 @@ public class ElevadorAutonomo {
         this.pulsosGiroAct = posGiroAct * PULSOS90;
     }
 
-    public ElevadorAutonomo(DcMotor elevador , DcMotor giroMotor, Servo servo, LinearOpMode linearOpMode){
+    public Elevador(DcMotor elevador , DcMotor giroMotor, Servo servo, LinearOpMode linearOpMode){
         this.elevador = elevador;
         this.giroMotor = giroMotor;
         this.servo = servo;
         this.linearOpMode = linearOpMode;
     }
 
+    public Elevador(DcMotor elevador , DcMotor giroMotor, Servo servo, Servo servo_2, LinearOpMode linearOpMode, int posGiroAct){
+        this.elevador = elevador;
+        this.giroMotor = giroMotor;
+        this.servo = servo;
+        this.servo_2 = servo_2;
+        this.linearOpMode = linearOpMode;
+        this.pulsosGiroAct = posGiroAct * PULSOS90;
+    }
+
     public void girar_0(double potencia){
         girar90Grados(0, potencia);
+
     }
 
     public void girar_1(double potencia){
         girar90Grados(1, potencia);
+
     }
 
     public void girar_2(double potencia){
         girar90Grados(2, potencia);
+
     }
 
     public void girar_3(double potencia){
-        girar90Grados(3, potencia);
+        girar90Grados(-1,potencia);
+
+
+
     }
 
     public void irAlto(double potencia){
-        elevarPulsos(PULSOSALTO, potencia);
-    }
+        int pulsosNecesarios = PULSOSALTO - pulsosActual;
+        if (pulsosNecesarios != 0 && pulsosNecesarios > 0){
+            moverseDistanciaMantener_1(potencia, pulsosNecesarios);
+        } else if (pulsosNecesarios < 0){
+            moverseDistanciaMantener_1(0.3, pulsosNecesarios);
+        }
+        pulsosActual += pulsosNecesarios;
 
-    public void mantener(){
-        elevador.setTargetPosition(this.elevador.getCurrentPosition());
-        elevador.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-        elevador.setPower(1);
+        this.elevador.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+        elevador.setPower(0.6);
+        linearOpMode.sleep(500);
+        moverseDistanciaMantener_1(1, 0);
     }
-
 
     public void irMedio(double potencia){
         elevarPulsos(PULSOSMEDIO, potencia);
@@ -115,14 +135,15 @@ public class ElevadorAutonomo {
 
     public void cerrarGarra(){
         servo.setPosition(0);
+        servo_2.setPosition(0.2);
         garraCerrada = false;
-        linearOpMode.sleep(500);
+
     }
 
     public void abrirGarra(){
-        servo.setPosition(1);
+        servo.setPosition(0.2);
+        servo_2.setPosition(0);
         garraCerrada = true;
-        linearOpMode.sleep(500);
     }
 
     public void elevarPulsos(final int PULSOS, double potencia){
@@ -130,7 +151,7 @@ public class ElevadorAutonomo {
         if (pulsosNecesarios != 0 && pulsosNecesarios > 0){
             moverseDistanciaMantener_1(potencia, pulsosNecesarios);
         } else if (pulsosNecesarios < 0){
-            moverseDistanciaMantener_1(potencia, pulsosNecesarios);
+            moverseDistanciaMantener_1(0.3, pulsosNecesarios);
         }
         pulsosActual += pulsosNecesarios;
     }
@@ -146,33 +167,23 @@ public class ElevadorAutonomo {
 
 
     private void moverseDistancia_1(double potencia , int distance){
-        elevador.setTargetPosition(distance);
+        elevador.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
 
-        elevador.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-        elevador.setPower(1);
-    }
-
-    public void moverseDistanciaMantener_1(double potencia , int distance){
-        elevador.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER  );
         elevador.setTargetPosition(distance);
 
         elevador.setMode(DcMotor.RunMode.RUN_TO_POSITION);
 
         elevador.setPower(potencia);
 
-        while(elevador.isBusy()){
+    }
 
-        }
+    public void moverseDistanciaMantener_1(double potencia , int distance){
 
-        elevador.setTargetPosition(elevador.getCurrentPosition());
+        elevador.setTargetPosition(distance);
 
         elevador.setMode(DcMotor.RunMode.RUN_TO_POSITION);
 
-        elevador.setPower(1);
-
-        while(elevador.isBusy()){
-
-        }
+        elevador.setPower(potencia);
 
     }
 
@@ -185,19 +196,17 @@ public class ElevadorAutonomo {
 
         giroMotor.setPower(potencia);
 
-        while(giroMotor.isBusy()){
+        /*while(giroMotor.isBusy()){
 
-        }
+        }*/
 
-        elevador.setTargetPosition(giroMotor.getCurrentPosition());
+    }
 
-        elevador.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+    public void frenarGiro(){
 
-        elevador.setPower(1);
 
-        while(giroMotor.isBusy()){
+        giroMotor.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
 
-        }
     }
 
 

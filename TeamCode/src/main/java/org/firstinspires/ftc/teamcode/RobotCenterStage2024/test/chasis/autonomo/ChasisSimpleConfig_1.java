@@ -1,62 +1,39 @@
-package org.firstinspires.ftc.teamcode.RobotPractica;
+package org.firstinspires.ftc.teamcode.RobotCenterStage2024.test.chasis.autonomo;
 
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.HardwareMap;
-import com.qualcomm.robotcore.hardware.Servo;
 import com.qualcomm.robotcore.util.ElapsedTime;
 
 import org.firstinspires.ftc.robotcore.external.Telemetry;
 
-public class RobotConfigMaster_3 {
-
-    //CONTROL HUB
+public class ChasisSimpleConfig_1 {
 
 
-    //EXPANSION HUB
     public DcMotor enfrenteDer = null; //0
     public DcMotor enfrenteIzq = null; //1
     public DcMotor atrasDer = null; //2
     public DcMotor atrasIzq = null; //3
 
-    public DcMotor[] motores = {enfrenteDer,enfrenteIzq, atrasDer, atrasIzq};
-
-
-
-
-
     HardwareMap hwMap = null;
     private ElapsedTime period = new ElapsedTime();
 
+    public ChasisSimpleConfig_1() {
 
+    }
 
     public void init(HardwareMap ahwMap, Telemetry telemetry) {
 
         hwMap = ahwMap;
 
-        motores[0] = hwMap.get(DcMotor.class, "enfrenteDer");
-        motores[1] = hwMap.get(DcMotor.class, "enfrenteIzq");
-        motores[2] = hwMap.get(DcMotor.class, "atrasDer");
-        motores[3]= hwMap.get(DcMotor.class, "atrasIzq");
-
-        enfrenteDer = motores[0];
-        enfrenteIzq = motores[1];
-        atrasDer = motores[2];
-        atrasIzq = motores[3];
-
-
+        enfrenteDer = hwMap.get(DcMotor.class, "enfrenteDer");
+        enfrenteIzq = hwMap.get(DcMotor.class, "enfrenteIzq");
+        atrasDer = hwMap.get(DcMotor.class, "atrasDer");
+        atrasIzq = hwMap.get(DcMotor.class, "atrasIzq");
         telemetry.addLine("Motores inicializados...");
-        telemetry.update();
 
 
-
-
-
-        telemetry.addLine("Sensores inicializados...");
-        telemetry.update();
-
-
-        reversa(atrasIzq , enfrenteDer);
-        derecho(atrasDer , enfrenteIzq);
+        reversa(atrasIzq , enfrenteIzq);
+        derecho(atrasDer , enfrenteDer);
 
         telemetry.addLine("Cambio de giro de motores hecho...");
         telemetry.update();
@@ -75,11 +52,6 @@ public class RobotConfigMaster_3 {
         telemetry.addData("Hardware", "Inicializado");
         telemetry.update();
     }
-
-
-
-
-
 
 
     public void reversa(DcMotor... motores) {
@@ -111,6 +83,7 @@ public class RobotConfigMaster_3 {
             motor.setMode(DcMotor.RunMode.RUN_TO_POSITION);
         }
     }
-}
 
+
+}
 
