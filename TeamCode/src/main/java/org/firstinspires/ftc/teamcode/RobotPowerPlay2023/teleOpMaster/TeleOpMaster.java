@@ -25,6 +25,8 @@ public class TeleOpMaster extends LinearOpMode {
         boolean cambio = true;
         int pulsosElevador = 0;
 
+
+
         waitForStart();
 
         while (opModeIsActive()) {
@@ -51,6 +53,8 @@ public class TeleOpMaster extends LinearOpMode {
             boolean cruzArriba2 = gamepad2.dpad_up;
             boolean cruzAbajo2 = gamepad2.dpad_down;
 
+
+
             telemetry.addLine("CONTROL 1");
             telemetry.addData("Stic isquierdo Y", stickIzquierdoY);
             telemetry.addData("Stic isquierdo X ", stickIzquierdoX);
@@ -66,12 +70,7 @@ public class TeleOpMaster extends LinearOpMode {
             telemetry.addData("Pos actual", elevador.pulsosGiroAct / 490);
             telemetry.addData("Pos elevador", elevador.elevador.getCurrentPosition());
 
-            telemetry.addData("motor enfrente derecha ", robot.enfrenteDer.getPower());
-            telemetry.addData("motor enfrente izquierda ", robot.enfrenteIzq.getPower());
-            telemetry.addData("motor atras derecha ", robot.atrasDer.getPower());
-            telemetry.addData("motor atras izquierda ", robot.atrasIzq.getPower());
-            telemetry.addData("motor de giro: ", robot.motor_1.getPower());
-            telemetry.addData("posicion de giro: ", robot.motor_1.getCurrentPosition());
+
 
             telemetry.update();
 
@@ -100,16 +99,21 @@ public class TeleOpMaster extends LinearOpMode {
                 if (gamepad2.y) {
                     elevador.girar_0(1);
                     elevador.frenarGiro();
+                    telemetry.addLine("Posicion de Giro: 0");
                 } else if (gamepad2.b) {
                     elevador.girar_1(1);
                     elevador.frenarGiro();
+                    telemetry.addLine("Posicion de Giro: 1");
                 } else if (gamepad2.a) {
                     elevador.girar_2(1);
                     elevador.frenarGiro();
+                    telemetry.addLine("Posicion de Giro: 2");
                 } else if (gamepad2.x) {
                     elevador.girar_3(1);
                     elevador.frenarGiro();
+                    telemetry.addLine("Posicion de Giro: 3");
                 }
+                telemetry.update();
 
                 //Control de giro (Manual)
                 int contadorManual = 0;
@@ -123,7 +127,7 @@ public class TeleOpMaster extends LinearOpMode {
                     }
                 }
 
-                int pulsosTopeSuperior = 3600;
+                int pulsosTopeSuperior = 4000;
                 int pulsosTopeInferior = 0;
 
                 //Control de elevador (Manual)
@@ -134,7 +138,7 @@ public class TeleOpMaster extends LinearOpMode {
                     cambio = true;
                 } else if (cruzAbajo2 && elevador.elevador.getCurrentPosition() > pulsosTopeInferior) {
                     robot.motor.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-                    robot.motor.setPower(-0.7);
+                    robot.motor.setPower(-1);
                     telemetry.addLine("Bajando");
                     cambio = true;
                 } else if (cambio) {
@@ -151,8 +155,10 @@ public class TeleOpMaster extends LinearOpMode {
                 } else {
                     elevador.cerrarGarra();
                 }
+                telemetry.update();
 
             }
+            telemetry.update();
 
 
         }
