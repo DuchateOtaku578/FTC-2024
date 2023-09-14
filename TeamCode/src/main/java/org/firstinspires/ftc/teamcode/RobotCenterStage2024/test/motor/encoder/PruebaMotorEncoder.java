@@ -4,7 +4,7 @@ import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 
-import org.firstinspires.ftc.teamcode.RobotCenterStage2024.domain.Chasis;
+import org.firstinspires.ftc.teamcode.domain.Chasis;
 import org.firstinspires.ftc.teamcode.RobotCenterStage2024.test.motor.sinencoder.PruebaMotorSinEncoderConfig;
 
 

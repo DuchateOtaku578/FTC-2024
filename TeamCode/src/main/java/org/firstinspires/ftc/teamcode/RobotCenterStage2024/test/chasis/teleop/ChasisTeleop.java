@@ -5,7 +5,7 @@ import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 
 import org.firstinspires.ftc.teamcode.RobotCenterStage2024.configuracion.RobotConfigMaster;
-import org.firstinspires.ftc.teamcode.RobotCenterStage2024.domain.Chasis;
+import org.firstinspires.ftc.teamcode.domain.Chasis;
 
 @Disabled
 @TeleOp(name="ChasisTeleop", group="Pushbot")

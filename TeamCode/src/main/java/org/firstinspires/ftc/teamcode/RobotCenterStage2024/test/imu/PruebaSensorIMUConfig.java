@@ -1,7 +1,11 @@
-package org.firstinspires.ftc.teamcode.RobotPowerPlay2023.test.motor.encoder;
+package org.firstinspires.ftc.teamcode.RobotCenterStage2024.test.imu;
 
+
+import com.qualcomm.hardware.bosch.BNO055IMU;
+import com.qualcomm.hardware.bosch.JustLoggingAccelerationIntegrator;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.HardwareMap;
+import com.qualcomm.robotcore.hardware.Servo;
 import com.qualcomm.robotcore.util.ElapsedTime;
 
 import org.firstinspires.ftc.robotcore.external.Telemetry;
@@ -16,21 +20,24 @@ import org.firstinspires.ftc.robotcore.external.Telemetry;
  * *
  */
 
-public class PruebaMotorEncoderConfig {
+public class PruebaSensorIMUConfig {
     /**
      * Declaracion de los motores/servo -- modificar
      */
     //Declarar objetos (motores y servos), es recomendable usar el mismo nombre
     //para el objeto y en la configracion en el robot
 
-    public DcMotor motor = null;
+
+
+
+    BNO055IMU imu;
 
     /* local OpMode members. -- no modificar */
     HardwareMap hwMap = null;
     private ElapsedTime period = new ElapsedTime();
 
     /* Constructor -- no modificar */
-    public PruebaMotorEncoderConfig() {
+    public PruebaSensorIMUConfig() {
 
     }
 
@@ -45,25 +52,40 @@ public class PruebaMotorEncoderConfig {
         /*En las comillas (deviceName) debe de ir el nombre que hayas puesto en la configuracion
         del robot*/
 
-        motor = hwMap.get(DcMotor.class, "motor");
+
         telemetry.addLine("Motores inicializados...");
 
+        imu = hwMap.get(BNO055IMU.class , "imu");
+
+        BNO055IMU.Parameters IMUParameters = new BNO055IMU.Parameters();
+
+        IMUParameters.angleUnit = BNO055IMU.AngleUnit.DEGREES;
+        IMUParameters.accelUnit = BNO055IMU.AccelUnit.METERS_PERSEC_PERSEC;
+        IMUParameters.accelerationIntegrationAlgorithm = new JustLoggingAccelerationIntegrator();
+        IMUParameters.calibrationDataFile = "BNO055IMU.json";
+
+        imu.initialize(IMUParameters);
 
         //Invertir giro de motores
-        derecho(motor);
+
         telemetry.addLine("Cambio de giro de motores hecho...");
+        telemetry.update();
 
         //Motores al 0%
-        motor.setPower(0);
+
         telemetry.addLine("Motores al 0%...");
+        telemetry.update();
 
         //Configurar modo
-        usarUsingEncoder(motor);
+
         telemetry.addLine("Motores configurados...");
+        telemetry.update();
 
         //Mensaje
-        telemetry.addLine("Robot inicilaizado con exito");
+        telemetry.addData("Hardware", "Inicializado");
+        telemetry.update();
         /** Fin de la configuracion*/
+
     }
 
 
@@ -99,4 +121,3 @@ public class PruebaMotorEncoderConfig {
 
 
 }
-

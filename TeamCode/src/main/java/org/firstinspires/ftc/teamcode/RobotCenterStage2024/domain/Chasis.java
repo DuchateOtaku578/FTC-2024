@@ -1,10 +1,16 @@
-package org.firstinspires.ftc.teamcode.RobotCenterStage2024.domain;
+package org.firstinspires.ftc.teamcode.domain;
 
 import com.qualcomm.hardware.bosch.BNO055IMU;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.hardware.Gamepad;
+
+import org.firstinspires.ftc.robotcore.external.Telemetry;
+import org.firstinspires.ftc.robotcore.external.navigation.AngleUnit;
+import org.firstinspires.ftc.robotcore.external.navigation.AxesOrder;
+import org.firstinspires.ftc.robotcore.external.navigation.AxesReference;
+import org.firstinspires.ftc.robotcore.external.navigation.Orientation;
 
 public class Chasis {
 
@@ -13,7 +19,7 @@ public class Chasis {
     private DcMotor atrasDer;
     private DcMotor atrasIzq;
     private LinearOpMode linearOpMode;
-
+    private BNO055IMU imu = null;
     public static final int cuadroY = 980;
     public static final int cuadroX = 1200;
     public static final int cuadroG = 930;
@@ -26,11 +32,25 @@ public class Chasis {
         this.atrasDer = atrasDer;
         this.atrasIzq = atrasIzq;
     }
+    public Chasis(BNO055IMU imu){
+        this.imu = imu;
+    }
+    public Chasis(DcMotor enfrenteDer, DcMotor enfrenteIzq, DcMotor atrasDer, DcMotor atrasIzq, BNO055IMU imu){
+        this.enfrenteDer = enfrenteDer;
+        this.enfrenteIzq = enfrenteIzq;
+        this.atrasDer = atrasDer;
+        this.atrasIzq = atrasIzq;
+        this.imu = imu;
+    }
 
+    public Chasis(DcMotor[] motores, LinearOpMode linearOpMode, BNO055IMU imu){
+        this.linearOpMode = linearOpMode;
+        this.motores = motores;
+        this.imu = imu;
+    }
     public Chasis(DcMotor[] motores, LinearOpMode linearOpMode){
         this.linearOpMode = linearOpMode;
         this.motores = motores;
-        ;
     }
 
     public Chasis(DcMotor[] motores, BNO055IMU imu, LinearOpMode linearOpMode){
@@ -280,10 +300,10 @@ public class Chasis {
 
         moverseDerecha(potencia);
 
-       /* while(enfrenteDer.isBusy() && enfrenteIzq.isBusy() && atrasDer.isBusy() &&
+        while(enfrenteDer.isBusy() && enfrenteIzq.isBusy() && atrasDer.isBusy() &&
                 atrasIzq.isBusy()){
 
-        }*/
+        }
 
         parar();
 
@@ -323,10 +343,10 @@ public class Chasis {
 
         moverseEnfrente(potencia);
 
-        /*while(enfrenteDer.isBusy() && enfrenteIzq.isBusy() && atrasDer.isBusy() &&
+        while(enfrenteDer.isBusy() && enfrenteIzq.isBusy() && atrasDer.isBusy() &&
                 atrasIzq.isBusy()){
 
-        }*/
+        }
 
         parar();
 
@@ -355,10 +375,10 @@ public class Chasis {
 
         moverseEnfrente(potencia);
 
-       /* while(enfrenteDer.isBusy() && enfrenteIzq.isBusy() && atrasDer.isBusy() &&
+        while(enfrenteDer.isBusy() && enfrenteIzq.isBusy() && atrasDer.isBusy() &&
                 atrasIzq.isBusy()){
 
-        }*/
+        }
 
         parar();
 
@@ -368,24 +388,17 @@ public class Chasis {
         atrasIzq.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
     }
 
-    public void tokyoDrift(double potencia){
-        enfrenteDer.setPower(potencia);
-        enfrenteIzq.setPower(-potencia);
-        atrasDer.setPower(potencia);
-        atrasIzq.setPower(potencia);
-    }
-
 
     public void parar(){
-        enfrenteDer.setPower(0);
-        enfrenteIzq.setPower(0);
-        atrasDer.setPower(0);
-        atrasIzq.setPower(0);
-        enfrenteDer.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
-        enfrenteIzq.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
-        atrasDer.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
-        atrasIzq.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+        moverseEnfrente(0);
     }
 
+    public double obtenerAngulo(){
+        Orientation angulos;
+        angulos = imu.getAngularOrientation(AxesReference.INTRINSIC, AxesOrder.ZYX, AngleUnit.DEGREES);
+        double primerAngulo = angulos.firstAngle;
+        primerAngulo += 180;
+        return primerAngulo;
+    }
 
-} 
+}

@@ -5,19 +5,21 @@ import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.DcMotor;
 
 import org.firstinspires.ftc.teamcode.RobotCenterStage2024.configuracion.RobotConfigMaster;
-import org.firstinspires.ftc.teamcode.RobotCenterStage2024.domain.Chasis;
+import org.firstinspires.ftc.teamcode.RobotCenterStage2024.configuracion.RobotConfigMaster_3;
 import org.firstinspires.ftc.teamcode.RobotCenterStage2024.domain.Elevador;
+import org.firstinspires.ftc.teamcode.domain.Chasis;
 
-@TeleOp(name="TeleOpMaster", group="Pushbot")
+
+@TeleOp(name="TeleOpMaster dafne", group="Pushbot")
 
 public class TeleOpMaster extends LinearOpMode {
 
     @Override
     public void runOpMode() {
-        RobotConfigMaster robot = new RobotConfigMaster();
+        RobotConfigMaster_3 robot = new RobotConfigMaster_3();
         robot.init(hardwareMap, telemetry);
-        Chasis chasis = new Chasis(robot.motores, this);
-        Elevador elevador = new Elevador(robot.motor, robot.motor_1, robot.servo, robot.servo_2, this, 0);
+        Chasis chasis = new Chasis(robot.enfrenteDer, robot.enfrenteIzq, robot.atrasDer, robot.atrasIzq);
+        //Elevador elevador = new Elevador(robot.motor, robot.motor_1, robot.servo, robot.servo_2, this, 0);
         chasis.init();
         telemetry.update();
         final double velocidad = 0.5;
@@ -31,7 +33,7 @@ public class TeleOpMaster extends LinearOpMode {
 
         while (opModeIsActive()) {
 
-            pulsosElevador = (pulsosElevador >= 0) ? robot.motor.getCurrentPosition() : 0;
+            //pulsosElevador = (pulsosElevador >= 0) ? robot.motor.getCurrentPosition() : 0;
 
             incremento = (gamepad1.left_stick_button || gamepad1.right_stick_button) ? 0.7 : 0;
 
@@ -55,7 +57,7 @@ public class TeleOpMaster extends LinearOpMode {
 
 
 
-            telemetry.addLine("CONTROL 1");
+           /* telemetry.addLine("CONTROL 1");
             telemetry.addData("Stic isquierdo Y", stickIzquierdoY);
             telemetry.addData("Stic isquierdo X ", stickIzquierdoX);
             telemetry.addData("Stic derecho Y ", stickDerechoY);
@@ -69,33 +71,32 @@ public class TeleOpMaster extends LinearOpMode {
 
             telemetry.addData("Pos actual", elevador.pulsosGiroAct / 490);
             telemetry.addData("Pos elevador", elevador.elevador.getCurrentPosition());
-
+            */
 
 
             telemetry.update();
 
 
             //Control de chasis
-            if (stickIzquierdoY > 0.5 && gamepad1.right_trigger > 0.1) {
-                chasis.tokyoDrift(velocidad + incremento);
-            } else if (stickIzquierdoY > 0.9) {
-                chasis.moverseEnfrente(velocidad + incremento);
-            } else if (stickIzquierdoY < -0.9) {
-                chasis.moverseAtras(velocidad + incremento);
-            } else if (stickIzquierdoX < -0.9) {
-                chasis.moverseIzquierda(velocidad + incremento);
-            } else if (stickIzquierdoX > 0.9) {
-                chasis.moverseDerecha(velocidad + incremento);
-            } else if (stickDerechoX < -0.9) {
-                chasis.girarIzquierda(velocidad + incremento);
-            } else if (stickDerechoX > 0.9) {
-                chasis.girarDerecha(velocidad + incremento);
+
+            if (gamepad1.x) {
+                chasis.moverseEnfrente(0.5);
+            } else if (gamepad1.b) {
+                chasis.moverseAtras(0.8);
+            } else if (gamepad1.y) {
+                chasis.moverseIzquierda(0.6);
+            } else if (gamepad1.a) {
+                chasis.moverseDerecha(0.5);
+            } else if (gamepad1.left_stick_x < -0.5) {
+                chasis.girarIzquierda(0.7);
+            } else if (gamepad1.right_stick_x > 0.7) {
+                  chasis.girarDerecha(0.8);
             } else {
                 chasis.parar();
             }
 
             //Control de giro (Automático)
-            if (robot.motor_1.isBusy() == false && gamepad2.left_trigger < 0.9) {
+           /* if (robot.motor_1.isBusy() == false && gamepad2.left_trigger < 0.9) {
                 if (gamepad2.y) {
                     elevador.girar_0(1);
                     elevador.frenarGiro();
@@ -159,7 +160,7 @@ public class TeleOpMaster extends LinearOpMode {
 
             }
             telemetry.update();
-
+*/
 
         }
 

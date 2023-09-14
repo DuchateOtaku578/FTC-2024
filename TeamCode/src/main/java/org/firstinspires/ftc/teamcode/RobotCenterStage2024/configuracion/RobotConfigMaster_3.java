@@ -1,21 +1,32 @@
-package org.firstinspires.ftc.teamcode.RobotPowerPlay2023.test.calibracion;
+package org.firstinspires.ftc.teamcode.RobotCenterStage2024.configuracion;
 
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.HardwareMap;
+import com.qualcomm.robotcore.hardware.Servo;
 import com.qualcomm.robotcore.util.ElapsedTime;
 
 import org.firstinspires.ftc.robotcore.external.Telemetry;
 
-public class CalibracionConfig_2 {
+public class RobotConfigMaster_3 {
+
+    //CONTROL HUB
+
+    //EXPANSION HUB
+    public DcMotor enfrenteDer = null; //0
+    public DcMotor enfrenteIzq = null; //1
+    public DcMotor atrasDer = null; //2
+    public DcMotor atrasIzq = null; //3
+
+    public DcMotor[] motores = {enfrenteDer,enfrenteIzq, atrasDer, atrasIzq};
 
 
-    public DcMotor motor = null;
-    public DcMotor motor_2 = null;
+
+
 
     HardwareMap hwMap = null;
     private ElapsedTime period = new ElapsedTime();
 
-    public CalibracionConfig_2() {
+    public RobotConfigMaster_3() {
 
     }
 
@@ -23,27 +34,54 @@ public class CalibracionConfig_2 {
 
         hwMap = ahwMap;
 
-        motor = hwMap.get(DcMotor.class, "motor");
-        motor_2 = hwMap.get(DcMotor.class, "motor_2");
+        motores[0] = hwMap.get(DcMotor.class, "enfrenteDer");
+        motores[1] = hwMap.get(DcMotor.class, "enfrenteIzq");
+        motores[2] = hwMap.get(DcMotor.class, "atrasDer");
+        motores[3]= hwMap.get(DcMotor.class, "atrasIzq");
+
+        enfrenteDer = motores[0];
+        enfrenteIzq = motores[1];
+        atrasDer = motores[2];
+        atrasIzq = motores[3];
+
 
         telemetry.addLine("Motores inicializados...");
+        telemetry.update();
 
-        derecho(motor);
+
+
+
+
+        telemetry.addLine("Sensores inicializados...");
+        telemetry.update();
+
+
+        reversa(atrasIzq , enfrenteIzq);
+        derecho(atrasDer , enfrenteDer);
 
         telemetry.addLine("Cambio de giro de motores hecho...");
         telemetry.update();
 
-        motor.setPower(0);
+        enfrenteDer.setPower(0);
+        enfrenteIzq.setPower(0);
+        atrasDer.setPower(0);
+        atrasIzq.setPower(0);
         telemetry.addLine("Motores al 0%...");
         telemetry.update();
 
-        usarUsingEncoder(motor);
+        usarUsingEncoder(enfrenteDer, enfrenteIzq, atrasDer, atrasIzq);
+
         telemetry.addLine("Motores configurados...");
         telemetry.update();
 
         telemetry.addData("Hardware", "Inicializado");
         telemetry.update();
     }
+
+
+
+
+
 
 
     public void reversa(DcMotor... motores) {
@@ -77,5 +115,7 @@ public class CalibracionConfig_2 {
     }
 
 
+
 }
+
 

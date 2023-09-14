@@ -11,7 +11,7 @@ import org.firstinspires.ftc.robotcore.external.navigation.AngleUnit;
 import org.firstinspires.ftc.robotcore.external.navigation.AxesOrder;
 import org.firstinspires.ftc.robotcore.external.navigation.AxesReference;
 import org.firstinspires.ftc.robotcore.external.navigation.Orientation;
-import org.firstinspires.ftc.teamcode.RobotCenterStage2024.domain.Chasis;
+import org.firstinspires.ftc.teamcode.domain.Chasis;
 
 public class ChasisSimpleConfig_2 {
 

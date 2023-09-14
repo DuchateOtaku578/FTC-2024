@@ -4,8 +4,7 @@ import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 
 import org.firstinspires.ftc.teamcode.RobotCenterStage2024.configuracion.RobotConfigMaster;
-import org.firstinspires.ftc.teamcode.RobotCenterStage2024.domain.Chasis;
-
+import org.firstinspires.ftc.teamcode.domain.Chasis;
 //@Disabled
 @Autonomous(name="ChasisAutonomo2", group="Pushbot")
 
